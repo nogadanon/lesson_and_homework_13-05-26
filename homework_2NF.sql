@@ -1,5 +1,14 @@
 -- 2NF: Partial Dependency
 
+-- 1. Identify which columns have partial dependencies and what they depend on.
+-- PRIMARY KEY (order_id, product_id).
+-- customer_name depend on order_id onlly.
+-- product_name depend on product_id onlly.
+-- unit_price depend on product_id onlly.
+
+-- 2. Design a 2NF-compliant schema: customers, products, orders, order_items.
+-- Screenshot attached
+
 -- 3. Write CREATE TABLE statements for all four tables.
 
 CREATE TABLE customers (

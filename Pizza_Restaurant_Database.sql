@@ -4,7 +4,7 @@
 CREATE TABLE customers (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 name TEXT NOT NULL,
-phone INTEGER UNIQUE NOT NULL,
+phone TEXT UNIQUE NOT NULL,
 address TEXT NOT NULL
 );
 
@@ -26,14 +26,12 @@ drink_name TEXT NOT NULL,
 price REAL NOT NULL
 );
 
-CREATE TABLE topping_per_pizza (
-order_id INTEGER,
-pizza_id INTEGER,
-topping_id INTEGER,
-toppings_price REAL NOT NULL DEFAULT (0),
-PRIMARY KEY (order_id, pizza_id, topping_id),
-FOREIGN KEY (topping_id) REFERENCES toppings_typs(id) ON DELETE RESTRICT,
-FOREIGN KEY (order_id, pizza_id) REFERENCES pizza_order(order_id, pizza_id) ON DELETE CASCADE
+CREATE TABLE orders (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+order_time TEXT NOT NULL DEFAULT (TIME('now')),
+customer_id INTEGER NOT NULL,
+total_price REAL NOT NULL DEFAULT (0),
+FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE pizza_order (
@@ -46,6 +44,16 @@ FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
 FOREIGN KEY (pizza_id) REFERENCES pizzas_typs(id) ON DELETE RESTRICT
 );
 
+CREATE TABLE topping_per_pizza (
+order_id INTEGER,
+pizza_id INTEGER,
+topping_id INTEGER,
+toppings_price REAL NOT NULL DEFAULT (0),
+PRIMARY KEY (order_id, pizza_id, topping_id),
+FOREIGN KEY (topping_id) REFERENCES toppings_typs(id) ON DELETE RESTRICT,
+FOREIGN KEY (order_id, pizza_id) REFERENCES pizza_order(order_id, pizza_id) ON DELETE CASCADE
+);
+
 CREATE TABLE drink_order (
 order_id INTEGER NOT NULL,
 drink_id INTEGER NOT NULL,
@@ -54,14 +62,6 @@ qty INTEGER NOT NULL,
 PRIMARY KEY (order_id, drink_id),
 FOREIGN KEY (drink_id) REFERENCES drink_typs(id) ON DELETE RESTRICT,
 FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
-);
-
-CREATE TABLE orders (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-order_time TEXT NOT NULL DEFAULT (TIME('now')),
-customer_id INTEGER NOT NULL,
-total_price REAL NOT NULL DEFAULT (0),
-FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE RESTRICT
 );
 _______________________________________________________________________________________________
 
